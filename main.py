@@ -13,10 +13,7 @@ from config import tool_config
 
 objects = []
 h_comp = []
-"""
-This lookup table contains occlusion distance at every
-"""
-lookupTable = -1 * np.ones((4096,4096))
+occlusion_distance = -1 * np.ones((4096,4096))
 blank_image  = np.zeros((3,4096,4096))
 PI = math.pi
 
@@ -40,8 +37,17 @@ def __init__():
     # init will be done here
 
 def compute_h_comp(params):
-    return None
-    #compute h
+    
+    #converting from body to world coordinates
+    h_bw = h_builders.bw_build(TBA,t)
+    
+    #converting from the world to camera cooerdinates 
+    h_wc = h_builders.wb_build((0,0,0),(-0.25, 0, 0))
+
+    #computing h_comp
+    h_comp = h_wc.dot(h_bw) 
+    
+    return h_comp
 
 def project(left_cor,right_cor):
     for i in range(len(left_cor)):
@@ -81,12 +87,10 @@ def project(left_cor,right_cor):
         # break
     return None
     #project h
-   
-def check_occlusion(x, y, occlusiondist):
-    if lookupTable[x, y] < occlusiondist:
-        lookupTable[x, y] = occlusiondist
-        return True
-    return False
+
+def check_occlusion(params):
+    return None
+    #return True or False
 
 
 def main(argv):
