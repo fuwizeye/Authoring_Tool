@@ -51,8 +51,18 @@ def __init__():
         objects.append(objects3)
 
 def compute_h_comp(params):
-        #compute h
-        pass
+    TBA = np.array([params[0], params[1], params[2]])
+    t = params[3]
+    
+    #converting from body to world coordinates
+    h_bw = h_builders.wb_build(TBA,t)
+    
+    #converting from the world to camera cooerdinates 
+    h_wc = h_builders.wb_build((0,0,0),(-0.25, 0, 0))
+
+    h_comp = h_wc.dot(h_bw) 
+    
+    return h_comp
 
 def project(params):
         #project h
